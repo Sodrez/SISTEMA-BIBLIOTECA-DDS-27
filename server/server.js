@@ -18,6 +18,14 @@ app.set("view engine", "ejs")
 app.set("views", path.join(__dirname,"../client/views") )
 
 // CRIAÇÃO DAS ROTAS
+
+// IMPORTAR AS ROTAS DE USUARIO
+const usuarioRoutes = require("./routes/usuarioRoutes.js")
+
+app.use("/usuarios", usuarioRoutes)
+
+
+
 // ROTAS PÚBLICAS
 app.get("/", (req, res) => {
     res.render('index')
@@ -47,7 +55,9 @@ const pool = require("./config/db.js");
             })
         }
         catch(erro){
-            console.log("erro ao conectar ao banco");
+            console.log("ERRO COMPLETO:", erro);
+            console.log("CÓDIGO DO ERRO:", erro.code);
+            console.log("MENSAGEM:", erro.message);
             process.exit(1)
              //SE DE ERRO ENCERRA A TENTATIVA
         }
