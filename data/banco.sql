@@ -2,7 +2,7 @@
 
 -- CRIAR O BANCO 
 CREATE DATABASE db_biblioteca;
-drop DATABASE db_biblioteca;
+
 -- UTILIZAR O BANCO
 USE db_biblioteca;
 
@@ -80,7 +80,7 @@ VALUES
     
     
 -- EXCLUIR TABELAS
-DROP TABLE tb_usuarios;
+-- DROP TABLE tb_usuarios;
 
 -- BUSCAR INFORMAÇÕES
 SELECT * FROM tb_leitores;
@@ -98,9 +98,3 @@ JOIN
 	tb_livros AS li
 ON
 	emp.livro = li.id_livro; -- aqui também
-
-
-
-    
-    
-

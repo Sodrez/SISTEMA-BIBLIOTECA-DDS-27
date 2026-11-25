@@ -1,27 +1,69 @@
-// IMPORTANDO AS CONFIGURAÇÕES DO BANCO
+// IMPORTANDO AS CONFIGURAÇÕES DO BANCO 
 const db = require("../config/db.js")
 
 // EXPORTAR AS FUNÇÕES DO MODEL
 module.exports = {
-    // LOGIN
-    login : () => {
-        console.log("LOGIN USUARIO FUNCIONANDO")
+    // LOGIN    
+    login : async (email, senha) => {
+        // VARIÁVEL PRA GUARDAR O COMANDO SQL
+        const sql = `SELECT * FROM tb_usuarios
+                     WHERE email = ? AND senha = ?`
+                                          
+        // EXECUTA O SQL
+        const [resultado] = await db.execute(sql, [email, senha])
+
+        // RETORNA PRO CONTROLLER O RESULTADO
+        return resultado[0] || null
     },
     // CRUD
     // CREATE
-    criarUsuario: () =>{
-        console.log("CRIEI UM USUARIO");
+    criarUsuario: async (nome, email, senha, perfil) =>{
+        // VARIÁVEL PRA GUARDAR O COMANDO SQL
+        const sql = ` INSERT INTO tb_usuarios (nome, email, senha, perfil)
+                      VALUES (?, ?, ?, ?)`
+        // EXECUTA O SQL
+        const [resultado] = await db.execute(sql, [nome, email, senha, perfil])
+
+        // RETORNA PRO CONTROLLER O RESULTADO
+        return resultado.insertId
     },
     // READ
-    listarUsuarios: () => {
-        console.log("TOMA AI OS USUARIOS")
+    listarUsuarios: async () => {
+        // VARIÁVEL PRA GUARDAR O COMANDO SQL
+        const sql = `SELECT * FROM tb_usuarios `
+
+        // EXECUTA O SQL
+        const [linhas] = await db.execute(sql)
+
+        // RETORNA PRO CONTROLLER O RESULTADO
+        return linhas
     },
-    // UPDADE
-    atualizarUsuarios: () =>{
-        console.log("ATUALIZEI UM USUARIO")
+    // UPDATE
+    atualizarUsuario: async (id, nome, email, senha, perfil) =>{
+        // VARIAVEL PRA GUARDAR COMANDO SQL
+        const sql = `UPDATE tb_usuarios
+                    SET nome = ?, email = ?, senha = ?, perfil = ? WHERE id_usuario = ?`
+        // EXECUTA O SQL
+        const [resultado] = await db.execute(sql, [nome, email, senha, perfil, id])
+        // RETORNA PRO CONTROLLER O RESUTLADO
+        return resultado.affectedRows
     },
     // DELETE
-    deletarUsuario: () =>{
-        console.log("APAGUEI UM USUARIO")
+    deletarUsuario: async (id) => {
+        // VARIÁVEL PRA GUARDAR O COMANDO SQL
+        const sql = `DELETE FROM tb_usuarios WHERE id_usuario = ?`
+        // EXECUTA O SQL
+        const [resultado] = await db.execute(sql, [id])
+        // RETORNA PRO CONTROLLER O RESULTADO
+        return resultado.affectedRows
+    },
+    // EDITAR
+    buscarPorId: async (id) => {
+        // VARIÁVEL PRA GUARDAR O COMANDO SQL
+        const sql = `SELECT * FROM tb_usuarios WHERE id_usuario = ?`
+        // EXECUTA O SQL
+        const [resultado] = await db.execute(sql,[id])
+        // RETORNA PRO CONTROLLER O RESULTADO
+        return resultado[0]
     }
 }

@@ -2,26 +2,35 @@
 const express = require("express")
 const router = express.Router()
 
-// IMPORTAR O CONTROLLER DO USUARIO
+// IMPORTAR O CONTROLLER DO USUÁRIO
 const usuarioControllers = require("../controllers/usuarioControllers.js")
 
-// ROTAS DO USUÁRIO
+// ROTAS DO USUÁRIOS
 // LOGIN
-router.get("/login", usuarioControllers.login)
+router.post("/login", usuarioControllers.login)
 
 
-// CRUS
 
-// MOSTRA A PAGINA DE CRIAR USUARIO
-router.get("/cadastre", (req, res) => {
-    res.send("ESTOU NA PAGINA CADASTRO")
+// CRUD
+// MOSTRA A PÁGINA DE CRIAR USUÁRIO
+router.get("/cadastrar", (req,res) => {
+    res.render("usuarios/cadastrar");
 })
 
-router.get("/", (req, res) => {
-    res.send("MOSTRANDO A LISTA DE USUARIOS")
-})
+// MANDAR AS INFORMAÇÕES DE CADASTRO PARA O CONTROLLER
+router.post("/cadastrar", usuarioControllers.criar)
 
-router.get("/login", usuarioControllers.login )
+// MOSTRA A PÁGINA DE EDITAR USUÁRIO
+router.get("/editar/:id", usuarioControllers.renderizarEditar)
+router.post("/editar/:id", usuarioControllers.editar)
+
+// MOSTRA A PÁGINA DE LISTAR USUÁRIOS
+router.get("/listar", usuarioControllers.listar)
+
+router.get("/", usuarioControllers.listar)
+
+// ROTA DE DELETAR UM USUÁRIO
+router.post("/deletar/:id", usuarioControllers.deletar)
 
 // EXPORTAR O ROUTER
 module.exports = router
